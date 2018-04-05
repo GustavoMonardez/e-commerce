@@ -4,15 +4,18 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using E_Commerce.Core.Models;
+using E_Commerce.Core.ViewModels;
 using E_Commerce.DataAccess.InMemory;
 
 namespace E_Commerce.WebUI.Controllers
 {
     public class ProductManagerController : Controller {
         ProductRepository context;
+        ProductCategoryRepository productCategories;
 
         public ProductManagerController() {
             context = new ProductRepository();
+            productCategories = new ProductCategoryRepository();
         }
         // GET: ProductManager
         public ActionResult Index() {
@@ -20,8 +23,11 @@ namespace E_Commerce.WebUI.Controllers
             return View(products);
         }
         public ActionResult Create() {
+            ProductManagerViewModel viewModel = new ProductManagerViewModel();
+            viewModel.Product = new Product();
+            viewModel.ProductCategories = productCategories.Collection();
             Product product = new Product();
-            return View(product);
+            return View(viewModel);
         }
         [HttpPost]
         public ActionResult Create(Product product) {
@@ -38,7 +44,10 @@ namespace E_Commerce.WebUI.Controllers
             if (product == null) {
                 return HttpNotFound();
             } else {
-                return View(product);
+                ProductManagerViewModel viewModel = new ProductManagerViewModel();
+                viewModel.Product = product;
+                viewModel.ProductCategories = productCategories.Collection();
+                return View(viewModel);
             }
         }
         [HttpPost]
