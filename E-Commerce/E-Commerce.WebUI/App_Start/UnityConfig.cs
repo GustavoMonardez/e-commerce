@@ -2,6 +2,7 @@ using E_Commerce.Core.Contracts;
 using E_Commerce.Core.Models;
 using E_Commerce.DataAccess.InMemory;
 using E_Commerce.DataAccess.SQL;
+using E_Commerce.Services;
 using System;
 
 using Unity;
@@ -48,6 +49,9 @@ namespace E_Commerce.WebUI
             // container.RegisterType<IProductRepository, ProductRepository>();
             container.RegisterType<IRepository<Product>, SQLRepository<Product>>();
             container.RegisterType<IRepository<ProductCategory>, SQLRepository<ProductCategory>>();
+            container.RegisterType<IRepository<Basket>, SQLRepository<Basket>>();
+            container.RegisterType<IRepository<BasketItem>, SQLRepository<BasketItem>>();
+            container.RegisterType<IBasketService, BasketService>();
         }
     }
 }
